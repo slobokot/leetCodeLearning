@@ -5,6 +5,7 @@ import com.slobokot.leetcode.convertor.ArrayParameterConvertor;
 import com.slobokot.leetcode.convertor.ChainConvertor;
 import com.slobokot.leetcode.convertor.ParameterConvertor;
 import com.slobokot.leetcode.convertor.PrimitiveParameterConvertor;
+import com.slobokot.leetcode.convertor.StringParameterConvertor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicTest;
 
@@ -24,7 +25,8 @@ public class TestRunner {
 
     static {
         ChainConvertor convertor = new ChainConvertor()
-                .add(new PrimitiveParameterConvertor());
+                .add(new PrimitiveParameterConvertor())
+                .add(new StringParameterConvertor());
         convertor.add(
                 new ArrayParameterConvertor(convertor));
         parameterConvertor = convertor;
