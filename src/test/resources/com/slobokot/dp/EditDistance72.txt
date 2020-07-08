@@ -1,0 +1,15 @@
+""
+""
+=0
+
+"a"
+""
+=1
+
+"horse"
+"ros"
+=3
+
+"intention"
+"execution"
+=5

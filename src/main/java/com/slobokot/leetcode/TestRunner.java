@@ -79,7 +79,7 @@ public class TestRunner {
     }
 
     void runTest(Object object, Method testMethod, TestArgs args) {
-        System.out.println("Test " + args.getName() + ", input:\n" + args.getStringArgs());
+        System.out.println("Running " + args.getName() + ", input:\n" + args.getStringArgs());
         long started = System.nanoTime();
         Object actual;
         try {
@@ -89,6 +89,7 @@ public class TestRunner {
         }
 
         long elapsed = System.nanoTime() - started;
+        System.out.println("Expected " + args.getResult());
         Assertions.assertEquals(args.getResult(), actual);
         System.out.println("Completed in " + TimeUnit.NANOSECONDS.toMillis(elapsed) + "ms");
     }
@@ -107,7 +108,7 @@ public class TestRunner {
         }
 
         if (candidate == null)
-            throw new RuntimeException("Public method not founc");
+            throw new RuntimeException("No public method was found");
 
         return candidate;
     }
