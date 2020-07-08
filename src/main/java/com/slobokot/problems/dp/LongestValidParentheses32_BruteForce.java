@@ -1,4 +1,4 @@
-package com.slobokot.dp;
+package com.slobokot.problems.dp;
 
 public class LongestValidParentheses32_BruteForce {
     /**

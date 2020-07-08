@@ -1,9 +1,7 @@
-package com.slobokot.leetcode.convertor;
+package com.slobokot.leetcodetestengine.convertor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 public class StringArrayIterator  implements Iterator<String> {
     Iterator<String> iterator;

@@ -1,6 +1,6 @@
-package com.slobokot.leetcode;
+package com.slobokot.leetcodetestengine;
 
-import com.slobokot.leetcode.convertor.ParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
 
 import java.util.ArrayList;
 import java.util.List;

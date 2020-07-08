@@ -1,6 +1,6 @@
-package com.slobokot.dp;
+package com.slobokot.problems.dp;
 
-import com.slobokot.leetcode.TestRunner;
+import com.slobokot.leetcodetestengine.TestRunner;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -13,12 +13,6 @@ class LongestValidParentheses32Test {
     @TestFactory
     public List<DynamicTest> leetCodeTests() throws Exception {
         return new TestRunner().runLeetCodeTests(x,
-                "com/slobokot/dp/LongestValidParentheses32.txt");
-    }
-
-    @Test
-    public void leetCodeTests1() throws Throwable {
-        new TestRunner().runLeetCodeTest(x,
-                "com/slobokot/dp/LongestValidParentheses32.txt", "test2");
+                "com/slobokot/problems/dp/LongestValidParentheses32.txt");
     }
 }

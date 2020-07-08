@@ -1,4 +1,4 @@
-package com.slobokot.leetcode.convertor;
+package com.slobokot.leetcodetestengine.convertor;
 
 public interface ParameterConvertor {
     Object convert(String value, Class<?> dstClass) throws Exception;

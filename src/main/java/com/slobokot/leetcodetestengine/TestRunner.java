@@ -1,11 +1,11 @@
-package com.slobokot.leetcode;
+package com.slobokot.leetcodetestengine;
 
 import com.slobokot.JarResources;
-import com.slobokot.leetcode.convertor.ArrayParameterConvertor;
-import com.slobokot.leetcode.convertor.ChainConvertor;
-import com.slobokot.leetcode.convertor.ParameterConvertor;
-import com.slobokot.leetcode.convertor.PrimitiveParameterConvertor;
-import com.slobokot.leetcode.convertor.StringParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.ArrayParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.ChainConvertor;
+import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.PrimitiveParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.StringParameterConvertor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicTest;
 

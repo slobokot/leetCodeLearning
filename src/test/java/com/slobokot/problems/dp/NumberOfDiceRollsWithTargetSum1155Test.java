@@ -1,9 +1,7 @@
-package com.slobokot.dp;
+package com.slobokot.problems.dp;
 
-import com.slobokot.leetcode.TestRunner;
-import org.junit.jupiter.api.Assertions;
+import com.slobokot.leetcodetestengine.TestRunner;
 import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import java.util.List;
@@ -16,7 +14,7 @@ class NumberOfDiceRollsWithTargetSum1155Test {
     List<DynamicTest> leetCodeTests() throws Exception {
         return new TestRunner().runLeetCodeTests(
                 x,
-                "com/slobokot/dp/NumberOfDiceRollsWithTargetSum1155.txt");
+                "com/slobokot/problems/dp/NumberOfDiceRollsWithTargetSum1155.txt");
     }
 
 }

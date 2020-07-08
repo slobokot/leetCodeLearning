@@ -1,6 +1,6 @@
-package com.slobokot.dp;
+package com.slobokot.problems.dp;
 
-import com.slobokot.leetcode.TestRunner;
+import com.slobokot.leetcodetestengine.TestRunner;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -13,12 +13,12 @@ class EditDistance72Test {
     @TestFactory
     public List<DynamicTest> leetCodeTests() throws Exception {
         return new TestRunner().runLeetCodeTests(x,
-                "com/slobokot/dp/EditDistance72.txt");
+                "com/slobokot/problems/dp/EditDistance72.txt");
     }
 
     @Test
     public void leetCodeTest1() throws Throwable {
         new TestRunner().runLeetCodeTest(x,
-                "com/slobokot/dp/EditDistance72.txt", "test2");
+                "com/slobokot/problems/dp/EditDistance72.txt", "test2");
     }
 }

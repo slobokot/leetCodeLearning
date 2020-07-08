@@ -1,9 +1,6 @@
-package com.slobokot.leetcode.convertor;
-
-import com.slobokot.leetcode.convertor.ParameterConvertor;
+package com.slobokot.leetcodetestengine.convertor;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 
 public class PrimitiveParameterConvertor implements ParameterConvertor {
     @Override
