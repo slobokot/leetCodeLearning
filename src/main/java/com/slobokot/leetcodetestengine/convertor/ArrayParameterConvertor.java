@@ -14,20 +14,24 @@ public class ArrayParameterConvertor implements ParameterConvertor {
 
     @Override
     public Object convert(String value, Class<?> dstClass) throws Exception {
-        Iterator<String> it = new StringArrayIterator(value);
-        List<Object> list = new ArrayList<>();
-        while(it.hasNext()) {
-            String current = it.next();
-            list.add(mainConvertor.convert(current, dstClass.getComponentType()));
-        }
+        try {
+            Iterator<String> it = new StringArrayIterator(value);
+            List<Object> list = new ArrayList<>();
+            while (it.hasNext()) {
+                String current = it.next();
+                list.add(mainConvertor.convert(current, dstClass.getComponentType()));
+            }
 
-        Object res = Array.newInstance(dstClass.getComponentType(), list.size());
-        int i = 0;
-        for (Object o : list) {
-            Array.set(res, i++, o);
-        }
+            Object res = Array.newInstance(dstClass.getComponentType(), list.size());
+            int i = 0;
+            for (Object o : list) {
+                Array.set(res, i++, o);
+            }
 
-        return res;
+            return res;
+        } catch(Exception e) {
+            throw new Exception("ArrayParameter conversion failed for string: " + value, e);
+        }
     }
 
     @Override

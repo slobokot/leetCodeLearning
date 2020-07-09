@@ -1,5 +1,7 @@
 package com.slobokot.leetcodetestengine.convertor;
 
+import org.junit.platform.commons.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -11,8 +13,8 @@ public class StringArrayIterator  implements Iterator<String> {
         i++;
         int e = s.indexOf("]", i);
         if (e < 0) throw new RuntimeException(s);
-        String[] split = s.substring(i, e).split(",", -1);
-        iterator = Arrays.asList(split).iterator();
+        String[] split = s.substring(i, e).split(",", 0);
+        iterator = Arrays.stream(split).filter(StringUtils::isNotBlank).iterator();
     }
 
     @Override
