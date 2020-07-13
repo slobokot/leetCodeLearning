@@ -1,6 +1,8 @@
 package com.slobokot.leetcodetestengine;
 
 import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
+import com.slobokot.leetcodetestengine.parser.PeekingIterator;
+import com.slobokot.leetcodetestengine.parser.Token;
 
 public class TestArgsBuilder {
     private final ParameterConvertor parameterConvertor;
@@ -29,17 +31,15 @@ public class TestArgsBuilder {
         idx++;
     }
 
-    public void provide(String value) throws Exception {
-        if (value.startsWith(":")) return;
-        if (value.startsWith("=")) {
-            if (result != null) throw new RuntimeException("Multiple results expected");
-            result = parameterConvertor.convert(value.substring(1), resultType);
-            return;
-        }
-
-        stringArgs.append(value).append("\n");
-        args[ptI] = parameterConvertor.convert(value, parameterTypes[ptI]);
+    public void provideArg(PeekingIterator<Token> testFileIterator) throws Exception {
+        args[ptI] = parameterConvertor.convert(testFileIterator, parameterTypes[ptI]);
+        stringArgs.append(args[ptI]).append("\n");
         ptI++;
+    }
+
+    public void provideAnswer(PeekingIterator<Token> testFileIterator) throws Exception {
+        if (result != null) throw new RuntimeException("Multiple results expected");
+        result = parameterConvertor.convert(testFileIterator, resultType);
     }
 
     public TestArgs build() {

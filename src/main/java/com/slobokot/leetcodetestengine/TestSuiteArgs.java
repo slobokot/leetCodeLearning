@@ -1,19 +1,22 @@
 package com.slobokot.leetcodetestengine;
 
 import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
+import com.slobokot.leetcodetestengine.parser.PeekingIterator;
+import com.slobokot.leetcodetestengine.parser.Token;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class TestSuiteArgs {
     private final TestArgsBuilder testArgsBuilder;
-    private final List<String> lines;
+    private final PeekingIterator<Token> testFileIterator;
 
-    public TestSuiteArgs(List<String> lines,
+    public TestSuiteArgs(Iterator<Token> testFileIterator,
                          ParameterConvertor parameterConvertor,
                          Class<?>[] parameterTypes,
                          Class<?> resultType) {
-        this.lines = lines;
+        this.testFileIterator = new PeekingIterator<>(testFileIterator);
         testArgsBuilder = new TestArgsBuilder( parameterConvertor,
                 parameterTypes,
                 resultType);
@@ -23,18 +26,21 @@ public class TestSuiteArgs {
         List<TestArgs> result = new ArrayList<>();
         int i = 0;
         while(true) {
-            while (i < lines.size() && lines.get(i).trim().isEmpty()) i++;
-            if (i == lines.size()) break;
-
-            while (i < lines.size()) {
-                String trim = lines.get(i).trim();
-                if (trim.isEmpty())
+            if (!testFileIterator.hasNext()) break;
+            while(true) {
+                if (testFileIterator.peek() == Token.ANSWER) {
+                    testFileIterator.next();
+                    testArgsBuilder.provideAnswer(testFileIterator);
                     break;
-                testArgsBuilder.provide(trim);
-                i++;
+                }
+
+                testArgsBuilder.provideArg(testFileIterator);
+                if (testFileIterator.next() != Token.NEW_LINE) throw new RuntimeException("New line expected " + testFileIterator);
             }
 
             result.add(testArgsBuilder.build());
+            while(testFileIterator.peek() == Token.NEW_LINE)
+                testFileIterator.next();
         }
 
         return result;

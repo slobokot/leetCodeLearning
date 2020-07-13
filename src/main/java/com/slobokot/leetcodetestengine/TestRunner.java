@@ -6,9 +6,11 @@ import com.slobokot.leetcodetestengine.convertor.ChainConvertor;
 import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
 import com.slobokot.leetcodetestengine.convertor.PrimitiveParameterConvertor;
 import com.slobokot.leetcodetestengine.convertor.StringParameterConvertor;
+import com.slobokot.leetcodetestengine.parser.TestFileIterator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicTest;
 
+import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -51,8 +53,8 @@ public class TestRunner {
      */
     public List<DynamicTest> runLeetCodeTests(Object object, String fileName) throws Exception {
         Method testMethod = findTestMethod(object);
-        List<String> fileLines = new JarResources().readAllLines(fileName);
-        TestSuiteArgs suiteIterator = new TestSuiteArgs(fileLines,
+        TestFileIterator iterator = new TestFileIterator(new StringReader(new JarResources().readAsString(fileName)));
+        TestSuiteArgs suiteIterator = new TestSuiteArgs(iterator,
                 parameterConvertor,
                 testMethod.getParameterTypes(),
                 testMethod.getReturnType());

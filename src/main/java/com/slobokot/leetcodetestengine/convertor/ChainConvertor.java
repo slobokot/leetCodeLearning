@@ -1,5 +1,8 @@
 package com.slobokot.leetcodetestengine.convertor;
 
+import com.slobokot.leetcodetestengine.parser.PeekingIterator;
+import com.slobokot.leetcodetestengine.parser.Token;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +19,13 @@ public class ChainConvertor implements ParameterConvertor {
     }
 
     @Override
-    public Object convert(String value, Class<?> dstClass) throws Exception {
+    public Object convert(PeekingIterator<Token> testFileIterator, Class<?> dstClass) throws Exception {
         for (ParameterConvertor convertor : convertors) {
             if (convertor.canConvert(dstClass))
-                return convertor.convert(value, dstClass);
+                return convertor.convert(testFileIterator, dstClass);
         }
 
-        throw new RuntimeException("Can not convert '" + value + "' to " + dstClass.getName());
+        throw new RuntimeException("Can not convert '" + testFileIterator + "' to " + dstClass.getName());
     }
 
     @Override
