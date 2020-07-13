@@ -1,11 +1,11 @@
 package com.slobokot.leetcodetestengine;
 
-import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.ParameterConverter;
 import com.slobokot.leetcodetestengine.parser.PeekingIterator;
 import com.slobokot.leetcodetestengine.parser.Token;
 
 public class TestArgsBuilder {
-    private final ParameterConvertor parameterConvertor;
+    private final ParameterConverter parameterConverter;
     private final Class<?>[] parameterTypes;
     private final Class<?> resultType;
     private Object[] args;
@@ -14,10 +14,10 @@ public class TestArgsBuilder {
     private StringBuilder stringArgs;
     private int idx = 0;
 
-    public TestArgsBuilder(ParameterConvertor parameterConvertor,
+    public TestArgsBuilder(ParameterConverter parameterConverter,
                            Class<?>[] parameterTypes,
                            Class<?> resultType) {
-        this.parameterConvertor = parameterConvertor;
+        this.parameterConverter = parameterConverter;
         this.parameterTypes = parameterTypes;
         this.resultType = resultType;
         init();
@@ -32,14 +32,14 @@ public class TestArgsBuilder {
     }
 
     public void provideArg(PeekingIterator<Token> testFileIterator) throws Exception {
-        args[ptI] = parameterConvertor.convert(testFileIterator, parameterTypes[ptI]);
+        args[ptI] = parameterConverter.convert(testFileIterator, parameterTypes[ptI]);
         stringArgs.append(args[ptI]).append("\n");
         ptI++;
     }
 
     public void provideAnswer(PeekingIterator<Token> testFileIterator) throws Exception {
         if (result != null) throw new RuntimeException("Multiple results expected");
-        result = parameterConvertor.convert(testFileIterator, resultType);
+        result = parameterConverter.convert(testFileIterator, resultType);
     }
 
     public TestArgs build() {

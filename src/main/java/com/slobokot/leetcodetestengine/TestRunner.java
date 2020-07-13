@@ -1,11 +1,12 @@
 package com.slobokot.leetcodetestengine;
 
 import com.slobokot.JarResources;
-import com.slobokot.leetcodetestengine.convertor.ArrayParameterConvertor;
-import com.slobokot.leetcodetestengine.convertor.ChainConvertor;
-import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
-import com.slobokot.leetcodetestengine.convertor.PrimitiveParameterConvertor;
-import com.slobokot.leetcodetestengine.convertor.StringParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.ArrayParameterConverter;
+import com.slobokot.leetcodetestengine.convertor.ChainConverter;
+import com.slobokot.leetcodetestengine.convertor.ListParameterConverter;
+import com.slobokot.leetcodetestengine.convertor.ParameterConverter;
+import com.slobokot.leetcodetestengine.convertor.PrimitiveParameterConverter;
+import com.slobokot.leetcodetestengine.convertor.StringParameterConverter;
 import com.slobokot.leetcodetestengine.parser.TestFileIterator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicTest;
@@ -23,15 +24,15 @@ import java.util.stream.Collectors;
 
 public class TestRunner {
     private static final Set<String> defaultMethods;
-    private static final ParameterConvertor parameterConvertor;
+    private static final ParameterConverter PARAMETER_CONVERTER;
 
     static {
-        ChainConvertor convertor = new ChainConvertor()
-                .add(new PrimitiveParameterConvertor())
-                .add(new StringParameterConvertor());
-        convertor.add(
-                new ArrayParameterConvertor(convertor));
-        parameterConvertor = convertor;
+        ChainConverter convertor = new ChainConverter()
+                .add(new PrimitiveParameterConverter())
+                .add(new StringParameterConverter());
+        convertor.add(new ArrayParameterConverter(convertor));
+        convertor.add(new ListParameterConverter(convertor));
+        PARAMETER_CONVERTER = convertor;
         defaultMethods = new HashSet<>();
         defaultMethods.addAll(Arrays.asList("equals",
                 "hashCode", "toString", "clone", "finalize", "wait", "getClass", "notify",
@@ -55,7 +56,7 @@ public class TestRunner {
         Method testMethod = findTestMethod(object);
         TestFileIterator iterator = new TestFileIterator(new StringReader(new JarResources().readAsString(fileName)));
         TestSuiteArgs suiteIterator = new TestSuiteArgs(iterator,
-                parameterConvertor,
+                PARAMETER_CONVERTER,
                 testMethod.getParameterTypes(),
                 testMethod.getReturnType());
         return suiteIterator.getAllTestArgs()

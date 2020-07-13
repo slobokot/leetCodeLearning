@@ -1,6 +1,6 @@
 package com.slobokot.leetcodetestengine;
 
-import com.slobokot.leetcodetestengine.convertor.ParameterConvertor;
+import com.slobokot.leetcodetestengine.convertor.ParameterConverter;
 import com.slobokot.leetcodetestengine.parser.PeekingIterator;
 import com.slobokot.leetcodetestengine.parser.Token;
 
@@ -13,11 +13,11 @@ public class TestSuiteArgs {
     private final PeekingIterator<Token> testFileIterator;
 
     public TestSuiteArgs(Iterator<Token> testFileIterator,
-                         ParameterConvertor parameterConvertor,
+                         ParameterConverter parameterConverter,
                          Class<?>[] parameterTypes,
                          Class<?> resultType) {
         this.testFileIterator = new PeekingIterator<>(testFileIterator);
-        testArgsBuilder = new TestArgsBuilder( parameterConvertor,
+        testArgsBuilder = new TestArgsBuilder(parameterConverter,
                 parameterTypes,
                 resultType);
     }

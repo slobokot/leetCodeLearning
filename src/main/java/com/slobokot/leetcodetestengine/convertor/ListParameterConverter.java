@@ -3,15 +3,13 @@ package com.slobokot.leetcodetestengine.convertor;
 import com.slobokot.leetcodetestengine.parser.PeekingIterator;
 import com.slobokot.leetcodetestengine.parser.Token;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class ArrayParameterConvertor implements ParameterConvertor {
-    private final ParameterConvertor mainConvertor;
+public class ListParameterConverter implements ParameterConverter {
+    private final ParameterConverter mainConvertor;
 
-    public ArrayParameterConvertor(ParameterConvertor mainConvertor) {
+    public ListParameterConverter(ParameterConverter mainConvertor) {
         this.mainConvertor = mainConvertor;
     }
 
@@ -33,23 +31,21 @@ public class ArrayParameterConvertor implements ParameterConvertor {
                     continue;
                 }
 
-                list.add(mainConvertor.convert(testFileIterator, dstClass.getComponentType()));
+                list.add(mainConvertor.convert(testFileIterator, null));
             }
 
-            Object res = Array.newInstance(dstClass.getComponentType(), list.size());
-            int i = 0;
-            for (Object o : list) {
-                Array.set(res, i++, o);
-            }
-
-            return res;
+            return list;
         } catch(Exception e) {
             throw new Exception("ArrayParameter conversion failed for string: " + testFileIterator, e);
         }
     }
 
     @Override
-    public boolean canConvert(Class<?> dstClass) throws Exception {
-        return dstClass.isArray();
+    public boolean canConvert(PeekingIterator<Token> testFileIterator, Class<?> dstClass) throws Exception {
+        if (dstClass == null) {
+            return testFileIterator.peek() == Token.ARRAY_START;
+        }
+
+        return List.class.isAssignableFrom(dstClass);
     }
 }
