@@ -1,6 +1,7 @@
 package com.slobokot.leetcodetestengine;
 
 import com.slobokot.JarResources;
+import com.slobokot.leetcodetestengine.assertion.LeetAssertions;
 import com.slobokot.leetcodetestengine.convertor.ArrayParameterConverter;
 import com.slobokot.leetcodetestengine.convertor.ChainConverter;
 import com.slobokot.leetcodetestengine.convertor.ListParameterConverter;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class TestRunner {
     private static final Set<String> defaultMethods;
     private static final ParameterConverter PARAMETER_CONVERTER;
+    private static final LeetAssertions leetAssertions;
 
     static {
         ChainConverter convertor = new ChainConverter()
@@ -37,6 +39,7 @@ public class TestRunner {
         defaultMethods.addAll(Arrays.asList("equals",
                 "hashCode", "toString", "clone", "finalize", "wait", "getClass", "notify",
                 "notifyAll"));
+        leetAssertions = new LeetAssertions();
     }
 
     /**
@@ -92,8 +95,8 @@ public class TestRunner {
         }
 
         long elapsed = System.nanoTime() - started;
-        System.out.println("Expected " + args.getResult());
-        Assertions.assertEquals(args.getResult(), actual);
+
+        leetAssertions.assertEquals(args.getResult(), actual);
         System.out.println("Completed in " + TimeUnit.NANOSECONDS.toMillis(elapsed) + "ms");
     }
 
