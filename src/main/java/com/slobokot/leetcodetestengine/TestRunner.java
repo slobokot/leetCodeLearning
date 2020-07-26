@@ -47,16 +47,17 @@ public class TestRunner {
      *     @TestFactory
      *     List<DynamicTest> leetCodeTests() throws Exception {
      *         return new TestRunner().runLeetCodeTests(
-     *                 new ObjectUnderTest(),
      *                 "com/myTest.txt");
      *     }
-     * @param object implementation class
+     * The class to test is determined by the name of the class who is calling this method,
+     * e.g. FooTest calls runLeetCodeTests, then the class to test is Foo
      * @param fileName resource file with leetCode tests
      * @return Dynamic tests for Junit5
      * @throws Exception everything
      */
-    public List<DynamicTest> runLeetCodeTests(Object object, String fileName) throws Exception {
-        Method testMethod = findTestMethod(object);
+    public List<DynamicTest> runLeetCodeTests(String fileName) throws Exception {
+        Class<?> classToTest = getTesteeClassNameByTestClassName();
+        Method testMethod = findTestMethod(classToTest);
         TestFileIterator iterator = new TestFileIterator(new StringReader(new JarResources().readAsString(fileName)));
         TestSuiteArgs suiteIterator = new TestSuiteArgs(iterator,
                 PARAMETER_CONVERTER,
@@ -67,13 +68,13 @@ public class TestRunner {
         .map(x ->
              DynamicTest.dynamicTest(
                     x.getName(),
-                     () -> runTest(object, testMethod, x)
+                     () -> runTest(classToTest, testMethod, x)
             )
         ).collect(Collectors.toList());
     }
 
-    public void runLeetCodeTest(Object object, String fileName, String testName) throws Throwable {
-        List<DynamicTest> dynamicTests = runLeetCodeTests(object, fileName);
+    public void runLeetCodeTest(String fileName, String testName) throws Throwable {
+        List<DynamicTest> dynamicTests = runLeetCodeTests(fileName);
         for (DynamicTest dynamicTest : dynamicTests) {
             if(dynamicTest.getDisplayName().equals(testName)) {
                 dynamicTest.getExecutable().execute();
@@ -84,12 +85,13 @@ public class TestRunner {
         throw new RuntimeException("Test " + testName + " not found");
     }
 
-    void runTest(Object object, Method testMethod, TestArgs args) {
+    void runTest(Class<?> aClass, Method testMethod, TestArgs args) throws Exception {
         System.out.println("Running " + args.getName() + ", input:\n" + args.getStringArgs());
         long started = System.nanoTime();
         Object actual;
         try {
-            actual = testMethod.invoke(object, args.getArgs());
+            Object o = aClass.newInstance();
+            actual = testMethod.invoke(o, args.getArgs());
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -100,9 +102,22 @@ public class TestRunner {
         System.out.println("Completed in " + TimeUnit.NANOSECONDS.toMillis(elapsed) + "ms");
     }
 
-    private Method findTestMethod(Object object) {
+    Class<?> getTesteeClassNameByTestClassName() throws Exception {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        int i = 1;
+        for(; i < stackTrace.length; i++) {
+            if (!stackTrace[i].getClassName().equals(this.getClass().getName())) {
+                String className = stackTrace[i].getClassName()
+                        .substring(0, stackTrace[i].getClassName().length() - "Test".length());
+                return this.getClass().getClassLoader().loadClass(className);
+            }
+        }
+        throw new RuntimeException("Can't figure out the class under the test");
+    }
+
+    private Method findTestMethod(Class<?> aClass) {
         Method candidate = null;
-        for (Method method : object.getClass().getMethods()) {
+        for (Method method : aClass.getMethods()) {
             if (Modifier.isPublic(method.getModifiers()) &&
                     !defaultMethods.contains(method.getName())) {
                 if (candidate != null) {
@@ -117,5 +132,9 @@ public class TestRunner {
             throw new RuntimeException("No public method was found");
 
         return candidate;
+    }
+
+    public static ParameterConverter getParameterConverter() {
+        return PARAMETER_CONVERTER;
     }
 }

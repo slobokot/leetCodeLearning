@@ -7,10 +7,11 @@ import org.junit.jupiter.api.TestFactory;
 
 import java.util.List;
 
-class EditDistance72Test {
+class BestTimeToBuyAndSellStockIII123_SomeSolutionTest {
+
     @TestFactory
     public List<DynamicTest> leetCodeTests() throws Exception {
         return new TestRunner().runLeetCodeTests(
-                "com/slobokot/problems/dp/EditDistance72.txt");
+                "com/slobokot/problems/dp/BestTimeToBuyAndSellStockIII123.txt");
     }
 }

@@ -8,11 +8,10 @@ import java.util.List;
 
 class LongestValidParentheses32_BruteForceTest {
 
-    LongestValidParentheses32_BruteForce x = new LongestValidParentheses32_BruteForce();
 
     @TestFactory
     public List<DynamicTest> leetCodeTests() throws Exception {
-        return new TestRunner().runLeetCodeTests(x,
+        return new TestRunner().runLeetCodeTests(
                 "com/slobokot/problems/dp/LongestValidParentheses32.txt");
     }
 

@@ -164,4 +164,22 @@ class TestFileIteratorTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void singleDimensionalArrayNegativeNumber() throws Exception {
+        TestFileIterator iterator = new TestFileIterator(new StringReader(new JarResources().readAsString(
+                "com/slobokot/leetcodetestengine/TestFileIterator/singleDimensionalArrayNegativeNumber.txt")));
+        List<Token> actual = new ArrayList<>();
+        iterator.forEachRemaining(actual::add);
+        List<Token> expected = Arrays.asList(
+                Token.ARRAY_START,
+                new Token(TokenType.NON_QUOTED_STRING, "0"),
+                Token.SEPARATOR,
+                new Token(TokenType.NON_QUOTED_STRING, "-1"),
+                Token.ARRAY_END,
+                Token.NEW_LINE
+        );
+
+        assertEquals(expected, actual);
+    }
+
 }

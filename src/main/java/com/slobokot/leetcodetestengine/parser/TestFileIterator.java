@@ -81,7 +81,7 @@ public class TestFileIterator implements Iterator<Token> {
 
         while(true) {
             int i = reader.peek();
-            if (isEOF(i) || !(Character.isAlphabetic(i) || Character.isDigit(i))) {
+            if (isEOF(i) || !(Character.isAlphabetic(i) || Character.isDigit(i) || (char)i == '-')) {
                 token = new Token(TokenType.NON_QUOTED_STRING, sb.toString());
                 return;
             }

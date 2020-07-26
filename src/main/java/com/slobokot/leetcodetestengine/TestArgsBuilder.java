@@ -4,6 +4,8 @@ import com.slobokot.leetcodetestengine.convertor.ParameterConverter;
 import com.slobokot.leetcodetestengine.parser.PeekingIterator;
 import com.slobokot.leetcodetestengine.parser.Token;
 
+import java.lang.reflect.Array;
+
 public class TestArgsBuilder {
     private final ParameterConverter parameterConverter;
     private final Class<?>[] parameterTypes;
@@ -33,8 +35,25 @@ public class TestArgsBuilder {
 
     public void provideArg(PeekingIterator<Token> testFileIterator) throws Exception {
         args[ptI] = parameterConverter.convert(testFileIterator, parameterTypes[ptI]);
-        stringArgs.append(args[ptI]).append("\n");
+        stringArgs.append(toString(args[ptI])).append("\n");
         ptI++;
+    }
+
+    private String toString(Object o) {
+        if (o != null && o.getClass().isArray()) {
+            int size = Array.getLength(o);
+            StringBuilder s = new StringBuilder();
+            s.append("[");
+            for(int i = 0; i < size; i++) {
+                if (i > 0)
+                    s.append(", ");
+                s.append(toString(Array.get(o, i)));
+            }
+            s.append("]");
+            return s.toString();
+        } else {
+            return String.valueOf(o);
+        }
     }
 
     public void provideAnswer(PeekingIterator<Token> testFileIterator) throws Exception {
